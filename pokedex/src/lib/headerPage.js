@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { List, Input, Card, Row, Col, Tag, Layout, Menu, BackTop } from "antd";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React from "react";
+import { Layout, Menu } from "antd";
+import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -21,6 +21,12 @@ const LogoDiv = styled.div`
 `;
 
 const { Header, Content, Footer } = Layout;
+
+/**
+ * Use antd layout template to create a header and render in every single page.
+ * More info please visit https://ant.design/components/layout/#header
+ * <Link> component from react-router-dom and must use inside of <Router>. Please go to App.js to see the construction
+ */
 
 export default function HeaderBar(props) {
   return (
@@ -43,7 +49,6 @@ export default function HeaderBar(props) {
             <Menu.Item key="1">
               <Link to="/">Pokedex </Link>
             </Menu.Item>
-
             <Menu.Item key="2">
               <Link to="/home">Home</Link>
             </Menu.Item>
@@ -56,11 +61,11 @@ export default function HeaderBar(props) {
           style={{
             background: "#fff",
             margin: "0px auto",
-            maxWidth:'65%',
+            maxWidth: "65%",
             minHeight: "auto",
           }}
         >
-            {props.children}
+          {props.children}
         </Content>
         <Footer style={{ textAlign: "center" }}>
           pokemon task by Philip Wu

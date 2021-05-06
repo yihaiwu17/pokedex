@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { List, Input, Card, Row, Col, Tag, BackTop,Image } from "antd";
-import { BrowserRouter as Router, Link } from "react-router-dom";
-
+import { List, Input, Card, Row, Col, Tag, BackTop, Image } from "antd";
+import { Link } from "react-router-dom";
+import { tagColor } from "../lib/colorList";
 import styled from "styled-components";
 import HeaderBar from "../lib/headerPage";
 
@@ -38,21 +38,24 @@ const UpDiv = styled.div`
   font-size: 14;
 `;
 
-const tagColor = [
-  "magenta",
-  "volcano",
-  "orange",
-  "red",
-  "green",
-  "purple",
-  "yellow",
-];
+/**
+ * This function is the main page to showing 151 pokemon. It is including the search and sort component.
+ *
+ * Tips:
+ * import Antd material to create UI component. More info please visit https://ant.design/components/overview/
+ * <Link> component from react-router-dom and must use inside of <Router>. Please go to App.js to see the construction
+ */
 
 function PokedexPage() {
   const [dataInfo, setDataInfo] = useState([]);
   const [defaultData, setDefaultData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortType, setSortType] = useState("");
+
+  /**
+   * fetchAllPokemonData function is to catch all data resources from API and after that,
+   * the fetchPokemonData function is going to take every single pokemon detail.
+   */
 
   const fetchAllPokemonData = () => {
     fetch(" https://pokeapi.co/api/v2/pokemon?limit=151")
@@ -73,9 +76,11 @@ function PokedexPage() {
       .then((pokeData) => {
         arr.push(pokeData);
         setDataInfo([...arr]);
-        setDefaultData([...arr]);
+        setDefaultData([...arr]); // Same data with DataInfo, it is back up resource and used in the search function
       });
   };
+
+  //sortArray is descending order
 
   const sortArray = (type) => {
     const types = {
@@ -90,13 +95,13 @@ function PokedexPage() {
     setDataInfo(sorted);
   };
 
+  // search function with name
+
   const searchArray = () => {
     const results = defaultData.filter((value) => {
-      return value.name.toLowerCase().includes(searchTerm);
+      return value.name.toLowerCase().includes(searchTerm); //If find the result, it going to return true
     });
-    console.log(results);
     setDataInfo(results);
-    console.log(dataInfo);
   };
 
   useEffect(() => {
@@ -122,11 +127,11 @@ function PokedexPage() {
               enterButton="Search"
               size="large"
               onSearch={(value) => {
-                console.log(value);
                 setSearchTerm(value);
               }}
             />
           </Col>
+          {/* sort function here */}
           <Col>
             <select onChange={(e) => setSortType(e.target.value)}>
               <option value="id">ID</option>
@@ -136,11 +141,10 @@ function PokedexPage() {
           </Col>
         </BarSection>
         <StyleDiv>
+          {/* antd List component, more detail https://ant.design/components/list/#header */}
           <List
             pagination={{
-              onChange: (page) => {
-                console.log(page);
-              },
+              onChange: (page) => {},
               pageSize: 8,
             }}
             grid={{
@@ -157,15 +161,22 @@ function PokedexPage() {
             size="small"
             renderItem={(item, index) => {
               return (
-                <Row justify = 'center' key={index}>
+                <Row justify="center" key={index}>
                   <List.Item key={item.id}>
                     <Link to={`/${item.name}`}>
+                      {/* antd Card component, more detail https://ant.design/components/card/#header */}
                       <Card
                         hoverable
                         bordered={false}
                         cover={
                           <Image
-                            style={{display:'flex',justifyContent:'center' ,alignItems:"center",objectFit:'contain',height:'200px'}}
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              objectFit: "contain",
+                              height: "200px",
+                            }}
                             preview={false}
                             alt="example"
                             src={`https://pokeres.bastionbot.org/images/pokemon/${item.id}.png`}
