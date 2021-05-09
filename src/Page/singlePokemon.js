@@ -42,7 +42,7 @@ export default function SinglePokemon() {
 
   useEffect(() => {
     SinglePokomonData();
-  }, [pokemonData]);
+  }, []);
 
   return (
     <div>
